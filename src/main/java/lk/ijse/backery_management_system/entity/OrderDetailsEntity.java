@@ -1,0 +1,16 @@
+package lk.ijse.backery_management_system.entity;
+
+import lombok.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+
+
+public class OrderDetailsEntity {
+    private String orderId;
+    private String productId;
+    private int qty;
+}

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="ancUser" prefHeight="1066.0" prefWidth="1950.0" style="-fx-background-color: #e7d2cb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.bakerymanagment.controller.UserController">
+   <children>
+      <Pane prefHeight="1066.0" prefWidth="438.0" style="-fx-background-color: #D4B5AD;">
+         <children>
+            <Text layoutX="52.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" textAlignment="CENTER" wrappingWidth="237.0">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+            <VBox layoutX="51.0" layoutY="196.0" prefHeight="410.0" prefWidth="269.0">
+               <children>
+                  <HBox prefHeight="36.0" prefWidth="298.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Id" wrappingWidth="108.13671875">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="lblUserId" strokeType="OUTSIDE" strokeWidth="0.0" text="    1" wrappingWidth="100.13671875">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="297.13671875">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtName" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                     <VBox.margin>
+                        <Insets bottom="7.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="297.13671875">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtAddress" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                     <VBox.margin>
+                        <Insets bottom="7.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="297.13671875">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtEmail" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                     <VBox.margin>
+                        <Insets bottom="7.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" wrappingWidth="297.13671875">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtContact" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="297.13671875">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="2.0" top="3.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtPassword" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" />
+               </children>
+               <padding>
+                  <Insets top="54.0" />
+               </padding>
+            </VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Button fx:id="txtBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnBackOnAction" style="-fx-background-radius: 10; -fx-background-color: #D4B5AD;" text="&lt; Back" />
+            <ImageView fitHeight="98.0" fitWidth="116.0" layoutX="259.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <VBox layoutX="63.0" layoutY="606.0" prefHeight="401.0" prefWidth="313.0">
+               <children>
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="43.0" prefWidth="151.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #000; -fx-background-color: #D4B5AD;" text="Save    ✅ ">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="73.0" top="7.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="41.0" prefWidth="149.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #D4B5AD; -fx-border-color: #000;" text="Delete   🗑">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="73.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="41.0" prefWidth="149.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #D4B5AD; -fx-border-color: #000;" text="Update  🕒">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="73.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnReset" mnemonicParsing="false" onAction="#btnResetOnAction" prefHeight="42.0" prefWidth="149.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #D4B5AD; -fx-border-color: #000;" text="Reset  🔄">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="73.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets top="87.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
+      <VBox layoutX="439.0" prefHeight="1066.0" prefWidth="1511.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="439.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="144.0" prefWidth="1511.0">
+               <children>
+                  <TextField fx:id="txtSearch1" accessibleText="Search" prefHeight="25.0" prefWidth="298.0" promptText="🔍 | Search " HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="1000.0" right="50.0" top="20.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <TableView fx:id="tblUser" onMouseClicked="#onClickedTable" prefHeight="725.0" prefWidth="1380.0" stylesheets="@Table.css">
+               <columns>
+                  <TableColumn fx:id="colUserId" prefWidth="196.0" text="User Id" />
+                  <TableColumn fx:id="colName" prefWidth="201.0" text="Name" />
+                  <TableColumn fx:id="colAddress" prefWidth="280.0" text="Address" />
+                  <TableColumn fx:id="colEmail" prefWidth="358.0" text="Email" />
+                  <TableColumn fx:id="colContact" prefWidth="201.0" text="Contact" />
+                  <TableColumn fx:id="colPassword" prefWidth="178.0" text="Password" />
+               </columns>
+               <VBox.margin>
+                  <Insets bottom="1.0" left="44.0" right="44.0" top="171.0" />
+               </VBox.margin>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

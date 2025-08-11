@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancDashbordloadPage" prefHeight="700.0" prefWidth="1400.0" style="-fx-background-color: #e7d2cb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.bakerymanagment.controller.DashbordController">
+   <children>
+      <VBox prefHeight="844.0" prefWidth="350.0" style="-fx-background-color: #D4B5AD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1325.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label prefHeight="104.0" prefWidth="196.0" text="Dashbord">
+               <font>
+                  <Font name="Gabriola" size="61.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="58.0" top="78.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="-95.0" left="240.0" right="1.0" top="-102.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../images/06523000e8fd612c8c7b597bfb015cd2-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <VBox prefHeight="605.0" prefWidth="391.0">
+               <VBox.margin>
+                  <Insets top="233.0" />
+               </VBox.margin>
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="lblOrderPlace" alignment="CENTER" onMouseClicked="#onClickedLbl" prefHeight="113.0" prefWidth="401.0" text="Order Placement" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="lblProduct" alignment="CENTER" onMouseClicked="#onClickedProduct" prefHeight="121.0" prefWidth="419.0" text="Production Placement">
+                           <font>
+                              <Font name="Comic Sans MS Bold Italic" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <AnchorPane fx:id="ancOverView" prefHeight="378.0" prefWidth="394.0">
+                     <children>
+                        <HBox prefHeight="78.0" prefWidth="394.0">
+                           <children>
+                              <ComboBox fx:id="cmbOverView" nodeOrientation="LEFT_TO_RIGHT" onAction="#cmbOverViewPagesOnAction" prefHeight="81.0" prefWidth="394.0" promptText="           Over View" style="-fx-background-color: #D4B5AD;" stylesheets="@ComboBoxStyle.css" visibleRowCount="5">
+                                 <effect>
+                                    <Blend />
+                                 </effect>
+                              </ComboBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <ImageView fitHeight="849.0" fitWidth="1083.0" layoutX="826.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/ba6b4943083c232b08e7085ef95ce6a6-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
