@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public interface InvoiceBO extends SuperBO {
 
-    public String getNextId() throws SQLException;
-    public boolean save(InvoiceDto invoiceDto) throws SQLException;
-    public ArrayList<InvoiceDto> getAll() throws SQLException;
-    public boolean update(InvoiceDto invoiceDto) throws SQLException;
-    public boolean delete(String invoiceId) throws SQLException;
-    public ArrayList<InvoiceDto> search(String search) throws SQLException;
+    public String getNextId() throws SQLException, ClassNotFoundException;
+    public boolean save(InvoiceDto invoiceDto) throws SQLException, ClassNotFoundException;
+    public ArrayList<InvoiceDto> getAll() throws SQLException, ClassNotFoundException;
+    public boolean update(InvoiceDto invoiceDto) throws SQLException, ClassNotFoundException;
+    public boolean delete(String invoiceId) throws SQLException, ClassNotFoundException;
+    public ArrayList<InvoiceDto> search(String search) throws SQLException, ClassNotFoundException;
 }
