@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public interface OrderBO extends SuperBO {
 
-    public String getNextId() throws SQLException;
-    public boolean save(OrderDto ordersDTO) throws SQLException;
-    public boolean update(OrderDto ordersDTO) throws SQLException;
-    public boolean delete(String order_id) throws SQLException;
-    public ArrayList<OrderDto> search(String search) throws SQLException;
-    public ArrayList<OrderDto> getAll() throws SQLException;
-    public ArrayList<String> getAllCustomerIds() throws SQLException;
+    public String getNextId() throws SQLException, ClassNotFoundException;
+    public boolean save(OrderDto ordersDTO) throws SQLException, ClassNotFoundException;
+    public boolean update(OrderDto ordersDTO) throws SQLException, ClassNotFoundException;
+    public boolean delete(String order_id) throws SQLException, ClassNotFoundException;
+    public ArrayList<OrderDto> search(String search) throws SQLException, ClassNotFoundException;
+    public ArrayList<OrderDto> getAll() throws SQLException, ClassNotFoundException;
+    public ArrayList<String> getAllCustomerIds() throws SQLException, ClassNotFoundException;
     public ArrayList<String> getAllProductIds() throws SQLException;
     public boolean saveNewOrder(String orderId , String customerId , String orderDate , String status , String productId);
 
