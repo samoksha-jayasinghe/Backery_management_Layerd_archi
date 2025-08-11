@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public interface PaymentBO extends SuperBO {
 
-    public String getNextId() throws SQLException;
-    public boolean save(PaymentDto paymentDTO) throws SQLException;
-    public ArrayList<PaymentDto> getAll() throws SQLException;
-    public boolean  update(PaymentDto paymentDTO) throws SQLException;
-    public boolean delete(String payment_id) throws SQLException;
-    public ArrayList<PaymentDto> search(String search) throws SQLException;
+    public String getNextId() throws SQLException, ClassNotFoundException;
+    public boolean save(PaymentDto paymentDTO) throws SQLException, ClassNotFoundException;
+    public ArrayList<PaymentDto> getAll() throws SQLException, ClassNotFoundException;
+    public boolean  update(PaymentDto paymentDTO) throws SQLException, ClassNotFoundException;
+    public boolean delete(String payment_id) throws SQLException, ClassNotFoundException;
+    public ArrayList<PaymentDto> search(String search) throws SQLException, ClassNotFoundException;
 
 }
