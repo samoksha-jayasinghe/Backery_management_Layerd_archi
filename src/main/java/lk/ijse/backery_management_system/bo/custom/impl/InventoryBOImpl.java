@@ -24,31 +24,31 @@ public class InventoryBOImpl implements InventoryBO {
         return inventoryDAO.save(new InventoryEntity(inventoryDto.getInventoryId(),inventoryDto.getProductId(),inventoryDto.getSupplierId(),inventoryDto.getItemName(),inventoryDto.getPrice(),inventoryDto.getQuantity()));
     }
 
-    public boolean update(IngredientDto ingredientDto) throws SQLException, ClassNotFoundException {
-        return ingredientDAO.update(new IngredientEntity(ingredientDto.getItemId(),ingredientDto.getProductId(),ingredientDto.getBatchno(),ingredientDto.getDate(),ingredientDto.getQty(),ingredientDto.getIngredientName()));
+    public boolean update(InventoryDto inventoryDto) throws SQLException, ClassNotFoundException {
+        return inventoryDAO.update(new InventoryEntity(inventoryDto.getInventoryId(),inventoryDto.getProductId(),inventoryDto.getSupplierId(),inventoryDto.getItemName(),inventoryDto.getPrice(),inventoryDto.getQuantity()));
     }
 
-    public boolean delete(String ingredient_id) throws SQLException, ClassNotFoundException {
-        return ingredientDAO.delete(ingredient_id);
+    public boolean delete(String inventory_id) throws SQLException, ClassNotFoundException {
+        return inventoryDAO.delete(inventory_id);
     }
 
-    public ArrayList<IngredientDto> search(String search) throws SQLException, ClassNotFoundException {
-        ArrayList<IngredientEntity> ingredients = ingredientDAO.search(search);
-        ArrayList<IngredientDto> dtos = new ArrayList<>();
-        for (IngredientEntity ingredient : ingredients) {
-            dtos.add(new IngredientDto(ingredient.getItemId(),ingredient.getProductId(),ingredient.getBatchno(),ingredient.getDate(),ingredient.getQty(),ingredient.getIngredientName()));
+    public ArrayList<InventoryDto> search(String search) throws SQLException, ClassNotFoundException {
+        ArrayList<InventoryEntity> inventorys = inventoryDAO.search(search);
+        ArrayList<InventoryDto> dtos = new ArrayList<>();
+        for (InventoryEntity inventory : inventorys) {
+            dtos.add(new InventoryDto(inventory.getInventoryId(),inventory.getProductId(),inventory.getSupplierId(),inventory.getItemName(),inventory.getPrice(),inventory.getQuantity()));
         }
         return dtos;
     }
 
-    public ArrayList<IngredientDto> getAll() throws SQLException, ClassNotFoundException {
-        ArrayList<IngredientEntity> ingredients = ingredientDAO.getAll();
-        ArrayList<IngredientDto> ingredientDtos = new ArrayList<>();
-        for (IngredientEntity ingredient : ingredients) {
-            ingredientDtos.add(new IngredientDto(ingredient.getItemId(),ingredient.getProductId(),ingredient.getBatchno(),ingredient.getDate(),ingredient.getQty(),ingredient.getIngredientName()));
+    public ArrayList<InventoryDto> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<InventoryEntity> inventorys = inventoryDAO.getAll();
+        ArrayList<InventoryDto> inventoryDtos = new ArrayList<>();
+        for (InventoryEntity inventory : inventorys) {
+            inventoryDtos.add(new InventoryDto(inventory.getInventoryId(),inventory.getProductId(),inventory.getSupplierId(),inventory.getItemName(),inventory.getPrice(),inventory.getQuantity()));
         }
 
-        return ingredientDtos;
+        return inventoryDtos;
     }
 }
 
