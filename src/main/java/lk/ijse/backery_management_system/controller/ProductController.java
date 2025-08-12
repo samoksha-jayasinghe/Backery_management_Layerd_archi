@@ -9,12 +9,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.OrderdetailsDto;
-import lk.ijse.bakerymanagment.dto.ProductDto;
-import lk.ijse.bakerymanagment.dto.tm.OrderDetailsTM;
-import lk.ijse.bakerymanagment.dto.tm.PaymentTM;
-import lk.ijse.bakerymanagment.dto.tm.ProductTM;
-import lk.ijse.bakerymanagment.model.ProductModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.PaymentBO;
+import lk.ijse.backery_management_system.bo.custom.ProductBO;
+import lk.ijse.backery_management_system.dto.ProductDto;
+import lk.ijse.backery_management_system.viewTm.ProductTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -46,7 +46,7 @@ public class ProductController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    private final ProductModel productModel = new ProductModel();
+    private final ProductBO productBO = (ProductBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.PRODUCT);
 
     public TextField txtSearch;
 
@@ -76,7 +76,7 @@ public class ProductController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblProduct.setItems(FXCollections.observableArrayList(
-                productModel.getAllproduct().stream()
+                productBO.getAll().stream()
                         .map(productDto -> new ProductTM(
                                 productDto.getProductId(),
                                 productDto.getName(),
@@ -111,7 +111,7 @@ public class ProductController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = productModel.getNextproductId();
+        String nextId = productBO.getNextId();
         lblProductId.setText(nextId);
     }
 
@@ -128,18 +128,18 @@ public class ProductController implements Initializable {
         int presePrice = Integer.parseInt(price);
         int preseQty = Integer.parseInt(qty);
 
-        ProductDto productDto = new ProductDto(
-                productId,
-                name,
-                presePrice,
-                preseStock,
-                category,
-                preseQty,
-                inventoryId
-        );
+        ;
 
         try {
-            boolean isSaved = productModel.saveProduct(productDto);
+            boolean isSaved = productBO.save(new ProductDto(
+                    productId,
+                    name,
+                    presePrice,
+                    preseStock,
+                    category,
+                    preseQty,
+                    inventoryId
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Product Saved", ButtonType.OK).show();
@@ -166,18 +166,18 @@ public class ProductController implements Initializable {
         int presePrice = Integer.parseInt(price);
         int preseQty = Integer.parseInt(qty);
 
-        ProductDto productDto = new ProductDto(
-                productId,
-                name,
-                presePrice,
-                preseStock,
-                category,
-                preseQty,
-                inventoryId
-        );
+      ;
 
         try {
-            boolean isUpdate = productModel.updateproduct(productDto);
+            boolean isUpdate = productBO.update(new ProductDto(
+                    productId,
+                    name,
+                    presePrice,
+                    preseStock,
+                    category,
+                    preseQty,
+                    inventoryId
+            ));
             if (isUpdate) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Product Saved", ButtonType.OK).show();
@@ -202,7 +202,7 @@ public class ProductController implements Initializable {
             String productId = lblProductId.getText();
 
             try {
-                boolean isDeleted = productModel.deleteproduct(productId);
+                boolean isDeleted = productBO.delete(productId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Product Deleted", ButtonType.OK).show();

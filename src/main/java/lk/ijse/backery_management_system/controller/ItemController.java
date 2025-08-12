@@ -9,9 +9,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.ItemDto;
-import lk.ijse.bakerymanagment.dto.tm.ItemTM;
-import lk.ijse.bakerymanagment.model.ItemModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.InvoiceBO;
+import lk.ijse.backery_management_system.bo.custom.ItemBO;
+import lk.ijse.backery_management_system.dto.ItemDto;
+import lk.ijse.backery_management_system.viewTm.ItemTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,7 +45,7 @@ public class ItemController implements Initializable {
     public Button btnDelete;
     public Button btnReset;
 
-    private final ItemModel itemModel = new ItemModel();
+    private final ItemBO itemBO = (ItemBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ITEM);
 
     public Button txtBack;
     public TextField txtSearch;
@@ -80,7 +83,7 @@ public class ItemController implements Initializable {
 
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblItem.setItems(FXCollections.observableArrayList(
-                itemModel.getAllItem().stream()
+                itemBO.getAll().stream()
                         .map(itemDto -> new ItemTM(
                                 itemDto.getItemId(),
                                 itemDto.getName(),
@@ -113,7 +116,7 @@ public class ItemController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = itemModel.getNextItemId();
+        String nextId = itemBO.getNextId();
         lblItemId.setText(nextId);
     }
 
@@ -130,17 +133,17 @@ public class ItemController implements Initializable {
         int presePrice = Integer.parseInt(price);
         int preseQuantity = Integer.parseInt(quantity);
 
-        ItemDto itemDto = new ItemDto(
-                id,
-                name,
-                category,
-                presePrice,
-                preseQuantity,
-                expireDate
-        );
+        ;
 
         try {
-            boolean isSaved = itemModel.saveItem(itemDto);
+            boolean isSaved = itemBO.save(new ItemDto(
+                    id,
+                    name,
+                    category,
+                    presePrice,
+                    preseQuantity,
+                    expireDate
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Item Saved", ButtonType.OK).show();
@@ -163,18 +166,18 @@ public class ItemController implements Initializable {
 
         int presePrice = Integer.parseInt(price);
         int preseQuantity = Integer.parseInt(quantity);
-        ItemDto itemDto = new ItemDto(
-                id,
-                name,
-                category,
-                presePrice,
-                preseQuantity,
-                expireDate
-        );
+
 
 
         try {
-            boolean isUpdate = itemModel.updateItem(itemDto);
+            boolean isUpdate = itemBO.update(new ItemDto(
+                    id,
+                    name,
+                    category,
+                    presePrice,
+                    preseQuantity,
+                    expireDate
+            ));
             if (isUpdate) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Item Saved", ButtonType.OK).show();
@@ -199,7 +202,7 @@ public class ItemController implements Initializable {
             String itemId = lblItemId.getText();
 
             try {
-                boolean isDeleted = itemModel.deleteItem(itemId);
+                boolean isDeleted = itemBO.delete(itemId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Item Deleted", ButtonType.OK).show();

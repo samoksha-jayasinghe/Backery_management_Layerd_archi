@@ -1,5 +1,6 @@
 package lk.ijse.backery_management_system.dao.custom.impl;
 
+import lk.ijse.backery_management_system.dao.custom.OrderDetailsDAO;
 import lk.ijse.backery_management_system.dao.custom.SQLUtil;
 import lk.ijse.backery_management_system.entity.OrderDetailsEntity;
 
@@ -7,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class OrderDetailsDAOImpl {
+public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.executeQuery("select Order_id from employee order_details by order_id desc limit 1");
         char tableCharacter = 'O';

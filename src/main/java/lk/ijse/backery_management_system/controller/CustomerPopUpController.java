@@ -3,8 +3,10 @@ package lk.ijse.backery_management_system.controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.bakerymanagment.dto.CustomerDto;
-import lk.ijse.bakerymanagment.model.CustomerModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.CustomerBO;
+import lk.ijse.backery_management_system.dto.CustomerDto;
+
 
 import java.sql.SQLException;
 
@@ -24,7 +26,7 @@ public class CustomerPopUpController {
     private final String numberPattern = "^[0-9]{10}$";
     private final String addressPattern = "^[A-Za-z0-9 ,./-]+$";
 
-    private final CustomerModel customerModel = new CustomerModel();
+    private final CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CUSTOMER);
 
     public void saveBtnOnAction(ActionEvent actionEvent) {
         String customerId = customerIdLabel.getText();
@@ -66,18 +68,18 @@ public class CustomerPopUpController {
             return;
         }
 
-        CustomerDto customerDto = new CustomerDto(
-                customerId,
-                name,
-                number,
-                address,
-                orderPlatform
-        );
+        ;
 
         // Save the customer
         if (isValidName && isValidNumber && isValidAddress) {
             try {
-                boolean isSaved = customerModel.saveCustomer(customerDto);
+                boolean isSaved = customerBO.save(new CustomerDto(
+                        customerId,
+                        name,
+                        number,
+                        address,
+                        orderPlatform
+                ));
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION, "Customer saved successfully").show();
                     resetPage();
@@ -106,7 +108,7 @@ public class CustomerPopUpController {
 
     private void loadNextId() {
         try {
-            String nextId = customerModel.getNextCustomerId();
+            String nextId = customerBO.getNextId();
             customerIdLabel.setText(nextId);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

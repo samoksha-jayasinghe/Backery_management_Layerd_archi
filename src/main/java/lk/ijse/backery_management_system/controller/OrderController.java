@@ -10,10 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.OrderDto;
-import lk.ijse.bakerymanagment.dto.tm.OrderDetailsTM;
-import lk.ijse.bakerymanagment.dto.tm.OrderTM;
-import lk.ijse.bakerymanagment.model.OrderModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.ItemBO;
+import lk.ijse.backery_management_system.bo.custom.OrderBO;
+import lk.ijse.backery_management_system.dto.OrderDto;
+import lk.ijse.backery_management_system.viewTm.OrderTM;
+
 
 
 import java.net.URL;
@@ -46,7 +48,7 @@ public class OrderController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    private final OrderModel orderModel = new OrderModel();
+    private final OrderBO orderBO = (OrderBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ORDER);
 
     public TextField txtSearch;
     public ComboBox cmbStatus;
@@ -67,7 +69,7 @@ public class OrderController implements Initializable {
         cmbStatus.setItems(FXCollections.observableArrayList("Pending","Shipped","Deliverd","Canceled"));
 
         try {
-            cmbCustomerId.setItems(FXCollections.observableArrayList(orderModel.getAllCustomerIds()));
+            cmbCustomerId.setItems(FXCollections.observableArrayList(orderBO.getAll()));
         }catch (Exception e){
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,"Something went wrong!").show();
@@ -86,7 +88,7 @@ public class OrderController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblOrder.setItems(FXCollections.observableArrayList(
-                orderModel.getAllOrder().stream()
+                orderBO.getAll().stream()
                         .map(orderDto -> new OrderTM(
                                 orderDto.getOrderId(),
                                 orderDto.getCustomerId(),
@@ -123,7 +125,7 @@ public class OrderController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = orderModel.getNextOrderId();
+        String nextId = orderBO.getNextId();
         lblOrderId.setText(nextId);
     }
 
@@ -142,16 +144,16 @@ public class OrderController implements Initializable {
             return;
         }
 
-        OrderDto orderDto = new OrderDto (
-                orderId,
-                customerId,
-                String.valueOf(orderDate),
-                status,
-                preseTotal
-        );
+        ;
 
         try {
-            boolean isUpdated = orderModel.saveOrder(orderDto);
+            boolean isUpdated = orderBO.save(new OrderDto(
+                    orderId,
+                    customerId,
+                    orderDate,
+                    status,
+                    preseTotal
+            ));
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Order Updated!",ButtonType.OK).show();
@@ -182,13 +184,13 @@ public class OrderController implements Initializable {
         OrderDto orderDto = new OrderDto (
                 orderId,
                 customerId,
-                String.valueOf(orderDate),
+                orderDate,
                 status,
                 preseTotal
         );
 
         try {
-            boolean isUpdated = orderModel.updateOrder(orderDto);
+            boolean isUpdated = orderBO.update(orderDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Order Updated!",ButtonType.OK).show();
@@ -213,7 +215,7 @@ public class OrderController implements Initializable {
             String orderId = lblOrderId.getText();
 
             try {
-                boolean isDeleted = orderModel.deleteOrder(orderId);
+                boolean isDeleted = orderBO.delete(orderId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION,"Order Deleted!",ButtonType.OK).show();
@@ -256,7 +258,7 @@ public class OrderController implements Initializable {
 
         if (selectedorder != null) {
             lblOrderId.setText(selectedorder.getOrderId());
-            ordersDatePicker.setValue(LocalDate.parse(selectedorder.getOrderdate()));
+            ordersDatePicker.setValue(LocalDate.parse(selectedorder.getOrderDate()));
             cmbCustomerId.setValue(selectedorder.getCustomerId());
             //txtOrderDate.setText(selectedorder.getOrderdate());
             cmbStatus.setValue(selectedorder.getStatus());
@@ -278,7 +280,7 @@ public class OrderController implements Initializable {
             }
         }else {
             try {
-                ArrayList<OrderDto> ordersList = orderModel.searchOrders(searchText);
+                ArrayList<OrderDto> ordersList = orderBO.search(searchText);
                 tblOrder.setItems(FXCollections.observableArrayList(
                         ordersList.stream()
                                 .map(orderDto -> new OrderTM(
@@ -297,7 +299,7 @@ public class OrderController implements Initializable {
         }
     }
     private void loadCustomerIds() throws SQLException, ClassNotFoundException {
-        cmbCustomerId.setItems(FXCollections.observableArrayList(orderModel.getAllCustomerIds()));
+        cmbCustomerId.setItems(FXCollections.observableArrayList(orderBO.getAllCustomerIds()));
     }
     /*public void goToAddCustomersLabel(MouseEvent mouseEvent) {
         navigateTo("/view/CustomerView.fxml");
@@ -314,7 +316,7 @@ public class OrderController implements Initializable {
                     OrderTM rowData = row.getItem();
                     // Assuming OrdersTM has a getDate() method returning String in yyyy-MM-dd or similar format
                     try {
-                        LocalDate date = LocalDate.parse(rowData.getOrderdate());
+                        LocalDate date = LocalDate.parse(rowData.getOrderDate());
                         ordersDatePicker.setValue(date);
                     } catch (Exception e) {
                         e.printStackTrace();

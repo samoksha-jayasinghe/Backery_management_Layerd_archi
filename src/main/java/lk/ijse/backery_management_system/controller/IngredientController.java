@@ -9,9 +9,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.IngredientDto;
-import lk.ijse.bakerymanagment.dto.tm.IngredientTM;
-import lk.ijse.bakerymanagment.model.IngredientModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.FeedbackBO;
+import lk.ijse.backery_management_system.bo.custom.IngredientBO;
+import lk.ijse.backery_management_system.dto.IngredientDto;
+import lk.ijse.backery_management_system.viewTm.IngredientTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,7 +45,7 @@ public class IngredientController implements Initializable {
     public Button btnDelete;
     public Button btnReset;
 
-    private final IngredientModel ingredientModel = new IngredientModel();
+    private final IngredientBO ingredientBO = (IngredientBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.INGREDIENT);
 
     public TextField txtSearch;
     public Button txtBackpage;
@@ -66,7 +69,7 @@ public class IngredientController implements Initializable {
     }
     public void loadTableData() throws SQLException, ClassNotFoundException {
         tblIngredient.setItems(FXCollections.observableArrayList(
-                ingredientModel.getAllIngredient().stream()
+                ingredientBO.getAll().stream()
                         .map(ingredientDto -> new IngredientTM(
                                 ingredientDto.getItemId(),
                                 ingredientDto.getProductId(),
@@ -109,17 +112,17 @@ public class IngredientController implements Initializable {
 
         int preseQty = Integer.parseInt(quantity);
 
-        IngredientDto ingredientDto = new IngredientDto(
-                itemtId,
-                productId,
-                batchNo,
-                expireDate,
-                preseQty,
-                ingredientName
-
-        );
+        ;
         try {
-            boolean isSaved = ingredientModel.saveIngredient(ingredientDto);
+            boolean isSaved = ingredientBO.save(new IngredientDto(
+                    itemtId,
+                    productId,
+                    batchNo,
+                    expireDate,
+                    preseQty,
+                    ingredientName
+
+            ));
 
             if (isSaved) {
                 resetPage();
@@ -146,17 +149,17 @@ public class IngredientController implements Initializable {
 
         int preseQty = Integer.parseInt(quantity);
 
-        IngredientDto ingredientDto = new IngredientDto(
-                itemtId,
-                productId,
-                batchNo,
-                expireDate,
-                preseQty,
-                ingredientName
-
-        );
+        ;
         try {
-            boolean isUpdate = ingredientModel.updateIngredient(ingredientDto);
+            boolean isUpdate = ingredientBO.update(new IngredientDto(
+                    itemtId,
+                    productId,
+                    batchNo,
+                    expireDate,
+                    preseQty,
+                    ingredientName
+
+            ));
 
             if (isUpdate) {
                 resetPage();
@@ -184,7 +187,7 @@ public class IngredientController implements Initializable {
             String itemId = lblItemId.getText();
 
             try {
-                boolean isDeleted = ingredientModel.deleteIngredient(itemId);
+                boolean isDeleted = ingredientBO.delete(itemId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();
@@ -200,7 +203,7 @@ public class IngredientController implements Initializable {
         }
     }
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = ingredientModel.getNextingredientId();
+        String nextId = ingredientBO.getNextId();
         lblItemId.setText(nextId);
     }
 

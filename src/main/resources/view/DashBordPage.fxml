@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancDashbordloadPage" prefHeight="700.0" prefWidth="1400.0" style="-fx-background-color: #e7d2cb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.bakerymanagment.controller.DashbordController">
+<AnchorPane fx:id="ancDashbordloadPage" prefHeight="700.0" prefWidth="1400.0" style="-fx-background-color: #e7d2cb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.backery_management_system.controller.DashbordController">
    <children>
       <VBox prefHeight="844.0" prefWidth="350.0" style="-fx-background-color: #D4B5AD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1325.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -73,7 +73,7 @@
       </VBox>
       <ImageView fitHeight="849.0" fitWidth="1083.0" layoutX="826.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/ba6b4943083c232b08e7085ef95ce6a6-removebg-preview.png" />
+<!--            <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/ba6b4943083c232b08e7085ef95ce6a6-removebg-preview.png" />-->
          </image>
       </ImageView>
    </children>

@@ -10,11 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.InventoryDto;
-import lk.ijse.bakerymanagment.dto.tm.FeedbackTM;
-import lk.ijse.bakerymanagment.dto.tm.IngredientTM;
-import lk.ijse.bakerymanagment.dto.tm.InventoryTM;
-import lk.ijse.bakerymanagment.model.InventoryModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.IngredientBO;
+import lk.ijse.backery_management_system.bo.custom.InventoryBO;
+import lk.ijse.backery_management_system.dto.InventoryDto;
+import lk.ijse.backery_management_system.viewTm.InventoryTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -44,7 +45,7 @@ public class InventoryController implements Initializable {
     public Button btnDelete;
     public Button btnReset;
 
-    private final InventoryModel inventoryModel = new InventoryModel();
+    private final InventoryBO inventoryBO = (InventoryBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.INVENTORY);
 
     public Button txtBack;
     public TextField txtSearch;
@@ -74,7 +75,7 @@ public class InventoryController implements Initializable {
 
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblInventory.setItems(FXCollections.observableArrayList(
-                inventoryModel.getAllInventory().stream()
+                inventoryBO.getAll().stream()
                         .map(inventoryDto -> new InventoryTM(
                                 inventoryDto.getInventoryId(),
                                 inventoryDto.getProductId(),
@@ -108,7 +109,7 @@ public class InventoryController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = inventoryModel.getNextInventoryId();
+        String nextId = inventoryBO.getNextId();
         lblInventoryId.setText(nextId);
     }
 
@@ -125,19 +126,19 @@ public class InventoryController implements Initializable {
         int preseprice = Integer.parseInt(price);
         int preseQuantity = Integer.parseInt(quantity);
 
-        InventoryDto inventoryDto = new InventoryDto(
-                inventoryId,
-                productId,
-                supplierId,
-                name,
-                preseprice,
-                preseQuantity
-
-
-        );
+        ;
 
         try {
-            boolean isSaved = inventoryModel.saveInventory(inventoryDto);
+            boolean isSaved = inventoryBO.save( new InventoryDto(
+                    inventoryId,
+                    productId,
+                    supplierId,
+                    name,
+                    preseprice,
+                    preseQuantity
+
+
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Inventory Saved").show();
@@ -172,7 +173,7 @@ public class InventoryController implements Initializable {
         );
 
         try {
-            boolean isUpdate = inventoryModel.updateInventory(inventoryDto);
+            boolean isUpdate = inventoryBO.update(inventoryDto);
             if (isUpdate) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Inventory Saved").show();
@@ -197,7 +198,7 @@ public class InventoryController implements Initializable {
             String inventoryId = lblInventoryId.getText();
 
             try {
-                boolean isDeleted = inventoryModel.deleteInventory(inventoryId);
+                boolean isDeleted = inventoryBO.delete(inventoryId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();
@@ -267,7 +268,7 @@ public class InventoryController implements Initializable {
         } else {
             try {
                 tblInventory.setItems(FXCollections.observableArrayList(
-                        inventoryModel.searchItems(searchText)
+                        inventoryBO.search(searchText)
                                 .stream()
                                 .map(inventoryDto -> new InventoryTM(
                                         inventoryDto.getInventoryId(),

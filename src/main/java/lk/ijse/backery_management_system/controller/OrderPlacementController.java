@@ -13,12 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lk.ijse.bakerymanagment.db.DBConnection;
-import lk.ijse.bakerymanagment.dto.CustomerDto;
-import lk.ijse.bakerymanagment.dto.InventoryDto;
-import lk.ijse.bakerymanagment.dto.ItemDto;
-import lk.ijse.bakerymanagment.dto.tm.OrderCartTM;
-import lk.ijse.bakerymanagment.model.*;
+import lk.ijse.backery_management_system.viewTm.OrderCartTM;
+
 
 import java.net.URL;
 import java.sql.Connection;
@@ -50,6 +46,9 @@ public class OrderPlacementController implements Initializable {
     public TableColumn<OrderCartTM , String> colPrice;
     public TableColumn<OrderCartTM , String> colTotal;
     public TableColumn<? , ?> colAction;
+
+
+
 
     private  final OrderModel orderModel = new OrderModel();
     private final CustomerModel customerModel = new CustomerModel();
@@ -182,7 +181,7 @@ public class OrderPlacementController implements Initializable {
             // 1. Prepare IDs and data
             //String shipmentId = shipmentModel.getNextShipmentId();
             //String shipmentDate = orderPlacementDate.getText();
-           // String trackingNumber = txtShipmentTrackingNumber.getText();
+            // String trackingNumber = txtShipmentTrackingNumber.getText();
 
             String orderId = lblOrderId.getText();
             String orderDate = orderPlacementDate.getText();
@@ -212,10 +211,10 @@ public class OrderPlacementController implements Initializable {
             // Save order
             boolean orderSaved = orderModel.saveNewOrder(
                     orderId,
-                    customerId,
                     orderDate,
+                    customerId,
                     status,
-                    productId
+                    total
             );
             if (!orderSaved) {
                 connection.rollback();

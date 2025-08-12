@@ -12,9 +12,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.PaymentDto;
-import lk.ijse.bakerymanagment.dto.tm.PaymentTM;
-import lk.ijse.bakerymanagment.model.PaymentModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.OrderdetailsBO;
+import lk.ijse.backery_management_system.bo.custom.PaymentBO;
+import lk.ijse.backery_management_system.dto.PaymentDto;
+import lk.ijse.backery_management_system.viewTm.PaymentTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -43,7 +46,7 @@ public class PaymentController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    private final PaymentModel paymentModel = new PaymentModel();
+    private final PaymentBO paymentBO = (PaymentBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.PAYMENT);
 
     public TextField txtSearch;
 
@@ -65,7 +68,7 @@ public class PaymentController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblPayment.setItems(FXCollections.observableArrayList(
-                paymentModel.getAllPayment().stream()
+                paymentBO.getAll().stream()
                         .map(paymentDto -> new PaymentTM(
                                 paymentDto.getPaymentId(),
                                 paymentDto.getOrderId(),
@@ -96,7 +99,7 @@ public class PaymentController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = paymentModel.getNextPaymentId();
+        String nextId = paymentBO.getNextId();
         lblPaymentId.setText(nextId);
     }
 
@@ -109,16 +112,16 @@ public class PaymentController implements Initializable {
 
         int preseAmmount = Integer.parseInt(ammount);
 
-        PaymentDto paymentDto = new PaymentDto(
-                paymentId,
-                orderId,
-                method,
-                paymentDate,
-                preseAmmount
-        );
+        ;
 
         try {
-            boolean isSaved = paymentModel.savePayment(paymentDto);
+            boolean isSaved = paymentBO.save(new PaymentDto(
+                    paymentId,
+                    orderId,
+                    method,
+                    paymentDate,
+                    preseAmmount
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Payment saved successfully!", ButtonType.OK).show();
@@ -149,7 +152,7 @@ public class PaymentController implements Initializable {
         );
 
         try {
-            boolean isUpdated = paymentModel.updatePayment(paymentDto);
+            boolean isUpdated = paymentBO.update(paymentDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Payment saved successfully!", ButtonType.OK).show();
@@ -174,7 +177,7 @@ public class PaymentController implements Initializable {
             String paymentId = lblPaymentId.getText();
 
             try {
-                boolean isDeleted = paymentModel.deletePayment(paymentId);
+                boolean isDeleted = paymentBO.delete(paymentId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION,"Payment deleted successfully!", ButtonType.OK).show();
@@ -239,7 +242,7 @@ public class PaymentController implements Initializable {
         } else {
             try {
                 tblPayment.setItems(FXCollections.observableArrayList(
-                        paymentModel.searchPayments(searchText)
+                        paymentBO.search(searchText)
                                 .stream()
                                 .map(payment -> new PaymentTM(
                                         payment.getPaymentId(),

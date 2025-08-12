@@ -69,4 +69,14 @@ public class CustomerBOImpl implements CustomerBO {
         return customerDAO.getCustomerNameById(customerId);
     }
 
+    @Override
+    public String generateNewId() throws Exception {
+        return "";
+    }
+
+    @Override
+    public ArrayList<CustomerDto> loadAll() throws Exception {
+        return null;
+    }
+
 }

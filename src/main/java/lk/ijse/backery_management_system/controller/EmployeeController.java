@@ -9,10 +9,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.CustomerDto;
-import lk.ijse.bakerymanagment.dto.EmployeeDto;
-import lk.ijse.bakerymanagment.dto.tm.EmployeeTM;
-import lk.ijse.bakerymanagment.model.EmployeeModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.CustomerBO;
+import lk.ijse.backery_management_system.bo.custom.EmployeeBO;
+import lk.ijse.backery_management_system.dto.EmployeeDto;
+import lk.ijse.backery_management_system.viewTm.EmployeeTM;
 
 import javax.xml.xpath.XPath;
 import java.net.URL;
@@ -43,7 +44,7 @@ public class EmployeeController implements Initializable {
     public Button btnUpdate;
     public Button btnReset;
 
-    private EmployeeModel employeeModel = new EmployeeModel();
+    private final EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.EMPLOYEE);
 
     public TextField txtSearch;
 
@@ -65,7 +66,7 @@ public class EmployeeController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblEmployee.setItems(FXCollections.observableArrayList(
-                employeeModel.getAllEmployee().stream()
+                employeeBO.getAll().stream()
                         .map(employeeDto -> new EmployeeTM(
                                 employeeDto.getEmployeeId(),
                                 employeeDto.getName(),
@@ -97,7 +98,7 @@ public class EmployeeController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = employeeModel.getNextEmployeeId();
+        String nextId = employeeBO.getNextId();
         lblEmployeeI.setText(nextId);
     }
 
@@ -109,18 +110,17 @@ public class EmployeeController implements Initializable {
         String contact = txtContact.getText();
 
         boolean contactValid = contact.length() == 10;
-
-        EmployeeDto employeeDto = new EmployeeDto(
-                employeeId,
-                name,
-                role,
-                salary,
-                contact
-
-        );
         if ( contactValid) {
+
             try {
-                boolean isSaved = employeeModel.saveEmployee(employeeDto);
+                boolean isSaved = employeeBO.save(new EmployeeDto(
+                        employeeId,
+                        name,
+                        role,
+                        salary,
+                        contact
+
+                ));
 
                 if (isSaved) {
                     resetPage();
@@ -145,15 +145,15 @@ public class EmployeeController implements Initializable {
         String salary = txtSalary.getText();
         String contact = txtContact.getText();
 
-        EmployeeDto employeeDto = new EmployeeDto(
-                employeeId,
-                name,
-                role,
-                salary,
-                contact
-        );
+
         try {
-            boolean isUpdate = employeeModel.updateEmployee(employeeDto);
+            boolean isUpdate = employeeBO.update(new EmployeeDto(
+                    employeeId,
+                    name,
+                    role,
+                    salary,
+                    contact
+            ));
             if (isUpdate) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Updated successfully", ButtonType.OK).show();
@@ -179,7 +179,7 @@ public class EmployeeController implements Initializable {
             String employeeId = lblEmployeeI.getText();
 
             try {
-                boolean isDelete = employeeModel.deleteEmployee(employeeId);
+                boolean isDelete = employeeBO.delete(employeeId);
                 if (isDelete) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();

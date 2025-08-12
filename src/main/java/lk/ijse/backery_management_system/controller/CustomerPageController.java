@@ -10,13 +10,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.CustomerBO;
 import lk.ijse.backery_management_system.dto.CustomerDto;
-//import lk.ijse.backery_management_system.dto.tm.CustomerTM;
-//import lk.ijse.backery_management_system.model.CustomerModel;
 import lk.ijse.backery_management_system.viewTm.CustomerTM;
-import lk.ijse.backery_management_system.dao.custom.CustomerDAO;
-import lk.ijse.backery_management_system.dao.custom.impl.CustomerDAOImpl;
-
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -47,7 +44,7 @@ public class CustomerPageController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    //private final CustomerModel customerModel = new CustomerModel();
+    private final CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CUSTOMER);
 
     private final String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     public TextField txtSearch;
@@ -72,7 +69,7 @@ public class CustomerPageController implements Initializable {
 
     public void loadTableData() throws SQLException, ClassNotFoundException {
         tblCustomer.setItems(FXCollections.observableArrayList(
-                customerModel.getAllCustomer().stream()
+                customerBO.getAll().stream()
                         .map(customerDto -> new CustomerTM(
                                 customerDto.getCustomerId(),
                                 customerDto.getFirstName(),
@@ -117,17 +114,17 @@ public class CustomerPageController implements Initializable {
         boolean emailValid = email.matches(emailPattern);
         boolean contactValid = contact.length() == 10;
 
-        CustomerDto customerDto = new CustomerDto(
-                customerId,
-                firstName,
-                address,
-                email,
-                contact,
-                userId
-        );
+        ;
         if (emailValid && contactValid) {
             try {
-                boolean isSaved = customerModel.saveCustomer(customerDto);
+                boolean isSaved = customerBO.save(new CustomerDto(
+                        customerId,
+                        firstName,
+                        address,
+                        email,
+                        contact,
+                        userId
+                ));
 
                 if (isSaved) {
                     resetPage();
@@ -152,16 +149,16 @@ public class CustomerPageController implements Initializable {
         String contact = txtContact.getText();
         String userId = txtUserId.getText();
 
-        CustomerDto customerDto = new CustomerDto(
-                customerId,
-                firstName,
-                address,
-                email,
-                contact,
-                userId
-        );
+        ;
         try {
-            boolean isUpdate = customerModel.updateCustomer(customerDto);
+            boolean isUpdate = customerBO.update(new CustomerDto(
+                    customerId,
+                    firstName,
+                    address,
+                    email,
+                    contact,
+                    userId
+            ));
             if (isUpdate) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Updated successfully", ButtonType.OK).show();
@@ -186,7 +183,7 @@ public class CustomerPageController implements Initializable {
             String customerId = lblCustomerId.getText();
 
             try {
-                boolean isDeleted = customerModel.deleteCustomer(customerId);
+                boolean isDeleted = customerBO.delete(customerId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();
@@ -201,7 +198,7 @@ public class CustomerPageController implements Initializable {
     }
 
     public void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = customerModel.getNextCustomerId();
+        String nextId = customerBO.getNextId();
         lblCustomerId.setText(nextId);
     }
 
@@ -259,7 +256,7 @@ public class CustomerPageController implements Initializable {
             }
         } else {
             try {
-                ArrayList<CustomerDto> customerList = customerModel.searchCustomer(searchText);
+                ArrayList<CustomerDto> customerList = customerBO.search(searchText);
                 tblCustomer.setItems(FXCollections.observableArrayList(
                         customerList.stream()
                                 .map(customerDto -> new CustomerTM(

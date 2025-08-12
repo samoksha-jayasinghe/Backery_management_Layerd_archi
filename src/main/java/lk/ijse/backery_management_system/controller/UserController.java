@@ -11,9 +11,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.UsersDto;
-import lk.ijse.bakerymanagment.dto.tm.UserTm;
-import lk.ijse.bakerymanagment.model.UserModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.SupplierBO;
+import lk.ijse.backery_management_system.bo.custom.UserBO;
+import lk.ijse.backery_management_system.dto.UsersDto;
+import lk.ijse.backery_management_system.viewTm.UserTm;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,7 +45,7 @@ public class UserController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    private final UserModel userModel = new UserModel();
+    private final UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.USERS);
 
     private final String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -72,7 +75,7 @@ public class UserController implements Initializable {
 
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblUser.setItems(FXCollections.observableArrayList(
-                userModel.getAllUser().stream()
+                userBO.getAll().stream()
                         .map(usersDto -> new UserTm(
                                 usersDto.getUserId(),
                                 usersDto.getName(),
@@ -124,18 +127,18 @@ public class UserController implements Initializable {
         boolean emailValid = email.matches(emailPattern);
         boolean contactValid = contact.length() == 10;
 
-        UsersDto usersDto = new UsersDto(
-                userId,
-                name,
-                address,
-                email,
-                contact,
-                txtPassword
-        );
+        ;
 
         if (emailValid && contactValid) {
             try {
-                boolean isSaved = userModel.saveUser(usersDto);
+                boolean isSaved = userBO.save(new UsersDto(
+                        userId,
+                        name,
+                        address,
+                        email,
+                        contact,
+                        txtPassword
+                ));
                 if (isSaved) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "User Saved", ButtonType.OK).show();
@@ -164,18 +167,18 @@ public class UserController implements Initializable {
         boolean emailValid = email.matches(emailPattern);
         boolean contactValid = contact.length() == 10;
 
-        UsersDto usersDto = new UsersDto(
-                userId,
-                name,
-                address,
-                email,
-                contact,
-                txtPassword
-        );
+        ;
 
         if (emailValid && contactValid) {
             try {
-                boolean isUpdated = userModel.updateUser(usersDto);
+                boolean isUpdated = userBO.update(new UsersDto(
+                        userId,
+                        name,
+                        address,
+                        email,
+                        contact,
+                        txtPassword
+                ));
                 if (isUpdated) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "User Saved", ButtonType.OK).show();
@@ -201,7 +204,7 @@ public class UserController implements Initializable {
             String userId = lblUserId.getText();
 
             try {
-                boolean isDeleted = userModel.deleteUser(userId);
+                boolean isDeleted = userBO.delete(userId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "User Deleted", ButtonType.OK).show();

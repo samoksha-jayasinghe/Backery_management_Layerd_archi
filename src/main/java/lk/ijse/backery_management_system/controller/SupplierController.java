@@ -11,9 +11,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.SupplierDto;
-import lk.ijse.bakerymanagment.dto.tm.SupplierTM;
-import lk.ijse.bakerymanagment.model.SupplierModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.ProductBO;
+import lk.ijse.backery_management_system.bo.custom.SupplierBO;
+import lk.ijse.backery_management_system.dto.SupplierDto;
+import lk.ijse.backery_management_system.viewTm.SupplierTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -40,7 +43,7 @@ public class SupplierController implements Initializable {
     public Button btnReset;
     public Button txtBack;
 
-    private final SupplierModel supplierModel = new SupplierModel();
+    private final SupplierBO supplierBO = (SupplierBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SUPPLIER);
 
     public TextField txtSearch;
 
@@ -61,7 +64,7 @@ public class SupplierController implements Initializable {
 
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblSupplier.setItems(FXCollections.observableArrayList(
-                supplierModel.getAllSupplier().stream()
+                supplierBO.getAll().stream()
                         .map(supplierDto -> new SupplierTM(
                                 supplierDto.getSupplierId(),
                                 supplierDto.getName(),
@@ -90,7 +93,7 @@ public class SupplierController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = supplierModel.getNextSupplierId();
+        String nextId = supplierBO.getNextId();
         lblSupplierId.setText(nextId);
     }
 
@@ -100,14 +103,14 @@ public class SupplierController implements Initializable {
         String contact = txtContact.getText();
         String address = txtAddress.getText();
 
-        SupplierDto supplierDto = new SupplierDto(
-                supplierId,
-                name,
-                contact,
-                address
-        );
+         ;
         try {
-            boolean isSaved = supplierModel.saveSupplier(supplierDto);
+            boolean isSaved = supplierBO.save(new SupplierDto(
+                    supplierId,
+                    name,
+                    contact,
+                    address
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Something went wrong", ButtonType.OK);
@@ -133,7 +136,7 @@ public class SupplierController implements Initializable {
                 address
         );
         try {
-            boolean isUpdated = supplierModel.updateSupplier(supplierDto);
+            boolean isUpdated = supplierBO.update(supplierDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION,"Something went wrong", ButtonType.OK);
@@ -159,7 +162,7 @@ public class SupplierController implements Initializable {
             String supplierId = lblSupplierId.getText();
 
             try {
-                boolean isDeleted = supplierModel.deleteSupplier(supplierId);
+                boolean isDeleted = supplierBO.delete(supplierId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION,"Something went wrong", ButtonType.OK);

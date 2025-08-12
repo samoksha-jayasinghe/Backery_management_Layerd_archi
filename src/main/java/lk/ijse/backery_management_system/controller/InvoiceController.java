@@ -9,9 +9,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.InvoiceDto;
-import lk.ijse.bakerymanagment.dto.tm.InvoiceTM;
-import lk.ijse.bakerymanagment.model.InvoiceModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.InventoryBO;
+import lk.ijse.backery_management_system.bo.custom.InvoiceBO;
+import lk.ijse.backery_management_system.dto.InvoiceDto;
+import lk.ijse.backery_management_system.viewTm.InvoiceTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -38,7 +41,7 @@ public class InvoiceController implements Initializable {
     public Button btnDelete;
     public Button btnReset;
 
-    private final InvoiceModel invoiceModel = new InvoiceModel();
+    private final InvoiceBO invoiceBO = (InvoiceBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.INVOICE);
 
     public Button txtBack;
 
@@ -60,7 +63,7 @@ public class InvoiceController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblInvoice.setItems(FXCollections.observableArrayList(
-                invoiceModel.getAllInvoice().stream()
+                invoiceBO.getAll().stream()
                         .map(invoiceDto -> new InvoiceTM(
                                 invoiceDto.getInvoiceid(),
                                 invoiceDto.getOrderid(),
@@ -91,7 +94,7 @@ public class InvoiceController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = invoiceModel.getNextInvoiceId();
+        String nextId = invoiceBO.getNextId();
         lblInvoiceId.setText(nextId);
     }
 
@@ -103,15 +106,15 @@ public class InvoiceController implements Initializable {
 
         int preseTotal = Integer.parseInt(totalAmount);
 
-        InvoiceDto invoiceDto = new InvoiceDto(
-                invoiceId,
-                orderId,
-                dataIssued,
-                preseTotal
-        );
+        ;
 
         try {
-            boolean isSaved = invoiceModel.saveInvoice(invoiceDto);
+            boolean isSaved = invoiceBO.save(new InvoiceDto(
+                    invoiceId,
+                    orderId,
+                    dataIssued,
+                    preseTotal
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Invoice Saved", ButtonType.OK).show();
@@ -133,15 +136,15 @@ public class InvoiceController implements Initializable {
 
         int preseTotal = Integer.parseInt(totalAmount);
 
-        InvoiceDto invoiceDto = new InvoiceDto(
-                invoiceId,
-                orderId,
-                dataIssued,
-                preseTotal
-        );
+
 
         try {
-            boolean isUpdated = invoiceModel.updateInvoice(invoiceDto);
+            boolean isUpdated = invoiceBO.update(new InvoiceDto(
+                    invoiceId,
+                    orderId,
+                    dataIssued,
+                    preseTotal
+            ));
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Invoice Saved", ButtonType.OK).show();
@@ -167,7 +170,7 @@ public class InvoiceController implements Initializable {
             String invoiceId = lblInvoiceId.getText();
 
             try {
-                boolean isDeleted = invoiceModel.deleteInvoice(invoiceId);
+                boolean isDeleted = invoiceBO.delete(invoiceId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();

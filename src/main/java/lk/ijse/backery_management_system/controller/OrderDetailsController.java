@@ -10,9 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.OrderdetailsDto;
-import lk.ijse.bakerymanagment.dto.tm.OrderDetailsTM;
-import lk.ijse.bakerymanagment.model.OrderdetailsModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.OrderBO;
+import lk.ijse.backery_management_system.bo.custom.OrderdetailsBO;
+import lk.ijse.backery_management_system.dto.OrderdetailsDto;
+import lk.ijse.backery_management_system.viewTm.OrderDetailsTM;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -40,7 +43,7 @@ public class OrderDetailsController implements Initializable {
     public Button btnDelete;
     public Button btnReset;
 
-    private final OrderdetailsModel orderdetailsModel = new OrderdetailsModel();
+    private final OrderdetailsBO orderdetailsBO = (OrderdetailsBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ORDERDETAILS);
     //private final
 
     public Button txtBack;
@@ -76,7 +79,7 @@ public class OrderDetailsController implements Initializable {
     }
     public void loadTable() throws SQLException, ClassNotFoundException {
         tblOrderDetails.setItems(FXCollections.observableArrayList(
-                orderdetailsModel.getAllOrderdetails().stream()
+                orderdetailsBO.getAll().stream()
                         .map(orderdetailsDto -> new OrderDetailsTM(
                                 orderdetailsDto.getOrderid(),
                                 orderdetailsDto.getProductId(),
@@ -103,7 +106,7 @@ public class OrderDetailsController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = orderdetailsModel.getNextOrderdetailsId();
+        String nextId = orderdetailsBO.getNextId();
         lblOrderId.setText(nextId);
     }
 
@@ -114,14 +117,14 @@ public class OrderDetailsController implements Initializable {
 
         int qty = Integer.parseInt(quantity);
 
-        OrderdetailsDto orderdetailsDto = new OrderdetailsDto(
-                orderId,
-                productId,
-                qty
-        );
+         ;
 
         try {
-            boolean isSaved = orderdetailsModel.saveOrderdetails(orderdetailsDto);
+            boolean isSaved = orderdetailsBO.save(new OrderdetailsDto(
+                    orderId,
+                    productId,
+                    qty
+            ));
             if (isSaved) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Order details save successfully", ButtonType.OK).show();
@@ -143,14 +146,14 @@ public class OrderDetailsController implements Initializable {
 
         int qty = Integer.parseInt(quantity);
 
-        OrderdetailsDto orderdetailsDto = new OrderdetailsDto(
-                orderId,
-                productId,
-                qty
-        );
+
 
         try {
-            boolean isUpdated = orderdetailsModel.updateOrderdetails(orderdetailsDto);
+            boolean isUpdated = orderdetailsBO.update(new OrderdetailsDto(
+                    orderId,
+                    productId,
+                    qty
+            ));
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Order details updated successfully", ButtonType.OK).show();
@@ -177,7 +180,7 @@ public class OrderDetailsController implements Initializable {
             String orderId = lblOrderId.getText();
 
             try {
-                boolean isDeleted = orderdetailsModel.deleteOrderdetails(orderId);
+                boolean isDeleted = orderdetailsBO.delete(orderId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Orderdetails deleted successfully", ButtonType.OK).show();
@@ -201,7 +204,7 @@ public class OrderDetailsController implements Initializable {
         OrderDetailsTM selectedOrderdetails = tblOrderDetails.getSelectionModel().getSelectedItem();
 
         if (selectedOrderdetails != null) {
-            lblOrderId.setText(selectedOrderdetails.getOrderid());
+            lblOrderId.setText(selectedOrderdetails.getOrderId());
             cmbProductid.getSelectionModel().getSelectedItem();
             txtQuantity.setText(String.valueOf(selectedOrderdetails.getQty()));
 
@@ -284,7 +287,7 @@ public class OrderDetailsController implements Initializable {
             }
         }else {
             try {
-                ArrayList<OrderdetailsDto> orderdetailsDto = orderdetailsModel.searchOrderItems(searchText);
+                ArrayList<OrderdetailsDto> orderdetailsDto = orderdetailsBO.search(searchText);
                 tblOrderDetails.setItems(FXCollections.observableArrayList(
                         orderdetailsDto.stream()
                                 .map(orderItemDto -> new OrderDetailsTM(

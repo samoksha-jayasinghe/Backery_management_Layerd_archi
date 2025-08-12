@@ -2,8 +2,7 @@ package lk.ijse.backery_management_system.dao;
 
 import lk.ijse.backery_management_system.dao.custom.impl.*;
 
-import static lk.ijse.backery_management_system.bo.BOFactory.BOTypes.MAINTENANCE;
-import static lk.ijse.backery_management_system.bo.BOFactory.BOTypes.MATERIALINVENTORY;
+
 
 public class DAOFactory {
     private static DAOFactory daoFactory;

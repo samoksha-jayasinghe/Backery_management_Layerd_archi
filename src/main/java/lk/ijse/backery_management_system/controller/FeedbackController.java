@@ -1,6 +1,6 @@
 package lk.ijse.backery_management_system.controller;
 
-import com.google.protobuf.StringValue;
+//import com.google.protobuf.StringValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +12,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import lk.ijse.bakerymanagment.dto.CustomerDto;
-import lk.ijse.bakerymanagment.dto.FeedbackDto;
-import lk.ijse.bakerymanagment.dto.tm.EmployeeTM;
-import lk.ijse.bakerymanagment.dto.tm.FeedbackTM;
-import lk.ijse.bakerymanagment.model.FeedbackModel;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.FeedbackBO;
+import lk.ijse.backery_management_system.dto.FeedbackDto;
+import lk.ijse.backery_management_system.viewTm.FeedbackTM;
+
 
 //import javax.swing.text.TabableView;
 //import java.awt.*;
@@ -41,16 +41,16 @@ public class FeedbackController implements Initializable {
     public Button btnReset;
 
     public TableView<FeedbackTM> tblFeedback;
-    public TableColumn<FeedbackDto , String > colFeedbackId;
-    public TableColumn<FeedbackDto , String > colCustomerId;
-    public TableColumn<FeedbackDto , String > colOrderId;
-    public TableColumn<FeedbackDto , String > colRating;
-    public TableColumn<FeedbackDto , String > colComment;
+    public TableColumn<FeedbackTM , String > colFeedbackId;
+    public TableColumn<FeedbackTM , String > colCustomerId;
+    public TableColumn<FeedbackTM , String > colOrderId;
+    public TableColumn<FeedbackTM , String > colRating;
+    public TableColumn<FeedbackTM , String > colComment;
 
     public Button txtBack;
     public TextField txtSearch;
 
-    private final FeedbackModel feedbackModel = new FeedbackModel();
+    private final FeedbackBO feedbackBO = (FeedbackBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FEEDBACK);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,7 +69,7 @@ public class FeedbackController implements Initializable {
     }
     public void loadTableData() throws SQLException, ClassNotFoundException {
         tblFeedback.setItems(FXCollections.observableArrayList(
-                feedbackModel.getAllFeedback().stream()
+                feedbackBO.getAll().stream()
                         .map(feedbackDto -> new FeedbackTM(
                                 feedbackDto.getFeedbackId(),
                                 feedbackDto.getCustomerId(),
@@ -102,7 +102,7 @@ public class FeedbackController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = feedbackModel.getNextFeedbackId();
+        String nextId = feedbackBO.getNextId();
         lblFeedBackId.setText(nextId);
     }
 
@@ -117,16 +117,16 @@ public class FeedbackController implements Initializable {
 
         int preseRating = Integer.parseInt(ratng);
 
-        FeedbackDto feedbackDto = new FeedbackDto(
-                feedbackId,
-                customerId,
-                orderId,
-                preseRating,
-                comment
-        );
+        ;
         //if (ratingValid) {
             try {
-                boolean isSaved = feedbackModel.saveFeedback(feedbackDto);
+                boolean isSaved = feedbackBO.save(new FeedbackDto(
+                        feedbackId,
+                        customerId,
+                        orderId,
+                        preseRating,
+                        comment
+                ));
 
                 if (isSaved) {
                     resetPage();
@@ -154,7 +154,7 @@ public class FeedbackController implements Initializable {
             String feedbackId = lblFeedBackId.getText();
 
             try {
-                boolean isDeleted = feedbackModel.deleteFeedback(feedbackId);
+                boolean isDeleted = feedbackBO.delete(feedbackId);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted successfully", ButtonType.OK).show();
@@ -180,15 +180,15 @@ public class FeedbackController implements Initializable {
 
         int preseRating = Integer.parseInt(rating);
 
-        FeedbackDto feedbackDto = new FeedbackDto(
-                feedbackId,
-                customerId,
-                orderId,
-                preseRating,
-                comment
-        );
+
             try {
-                boolean isUpdate = feedbackModel.updateFeedback(feedbackDto);
+                boolean isUpdate = feedbackBO.update(new FeedbackDto(
+                        feedbackId,
+                        customerId,
+                        orderId,
+                        preseRating,
+                        comment
+                ));
 
                 if (isUpdate) {
                     resetPage();

@@ -57,16 +57,26 @@ public class OrderdetailsBOImpl implements OrderdetailsBO {
         return dtos;
     }
 
-    public ArrayList<String> getAllCustomerIds() throws SQLException, ClassNotFoundException {
-        return orderDAO.getAllCustomerIds();
+    @Override
+    public ArrayList<String> getAllOrderIds() throws SQLException, ClassNotFoundException {
+        return null;
     }
-
-
 
     @Override
-    public boolean saveNewOrderDetails( String orderId , int Qty , String productId ) throws SQLException, ClassNotFoundException {
-        return orderDetailsDAO.saveNewOrderDetails(orderId , Qty , productId);
+    public boolean saveNewOrderDetails(String orderId, int Qty, String productId) throws SQLException, ClassNotFoundException {
+        return false;
     }
+
+    public ArrayList<String> getAllCustomerIds() throws SQLException, ClassNotFoundException {
+        return orderDetailsDAO.getAllOrderIds();
+    }
+
+
+
+//    @Override
+//    public boolean saveNewOrderDetails( String orderId , int Qty , String productId ) throws SQLException, ClassNotFoundException {
+//        return orderDetailsDAO.saveNewOrderDetails(orderId , Qty , productId);
+//    }
 
 
 
