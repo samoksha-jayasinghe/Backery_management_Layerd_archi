@@ -382,7 +382,7 @@ public class OrderPlacementController implements Initializable {
                 try {
                     ItemDto items = itemBO.getItemById(newValue);
                     lblItemName.setText(items.getName());
-                    lblAvailableQty.setText(String.valueOf(items.getQuantity()));
+                    txtAddToCartQty.setText(String.valueOf(items.getQuantity()));
                     lblItemPrice.setText(String.valueOf(items.getPrice()));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
