@@ -18,6 +18,7 @@ import lk.ijse.backery_management_system.bo.custom.*;
 import lk.ijse.backery_management_system.db.DBConnection;
 import lk.ijse.backery_management_system.dto.InventoryDto;
 import lk.ijse.backery_management_system.dto.ItemDto;
+import lk.ijse.backery_management_system.dto.OrderDto;
 import lk.ijse.backery_management_system.viewTm.OrderCartTM;
 
 
@@ -120,7 +121,8 @@ public class OrderPlacementController implements Initializable {
             return;
         }
 
-        String selectedCustomerId = customerBO.getCustomerNameById(txtCustomerContact.getText());
+        String selectedCustomerId = customerBO.getCustomerIdByContact(txtCustomerContact.getText());
+        System.out.println("Selected Customer ID: " + selectedCustomerId);
         String itemName = lblItemName.getText();
         String itemUnitPriceString = lblItemPrice.getText();
 
@@ -189,7 +191,7 @@ public class OrderPlacementController implements Initializable {
             String orderId = lblOrderId.getText();
             String orderDate = orderPlacementDate.getText();
             String customerContact = txtCustomerContact.getText();
-            String customerId = customerBO.getCustomerNameById(customerContact);
+            String customerId = customerBO.getCustomerIdByContact(customerContact);
             String status = "Shipped";
             String totalAmount = String.valueOf(cartData.stream().mapToDouble(OrderCartTM::getTotal).sum());
 
@@ -212,13 +214,15 @@ public class OrderPlacementController implements Initializable {
 
 
             // Save order
-            boolean orderSaved = orderBO.saveNewOrder(
+            boolean orderSaved = orderBO.save(new OrderDto(
                     orderId,
-                    orderDate,
                     customerId,
+                    orderDate,
                     status,
-                    String.valueOf(total)
-            );
+                    total,
+                    "00"
+            ));
+//            boolean orderDetailsSaved = order
             if (!orderSaved) {
                 connection.rollback();
                 new Alert(Alert.AlertType.ERROR, "Failed to save order!").show();
@@ -229,24 +233,27 @@ public class OrderPlacementController implements Initializable {
             boolean allItemsSaved = true;
             for (OrderCartTM cartTM : cartData) {
                 //String orderItemId = itemBO.getNextId();
-                boolean itemSaved = itemBO.save(new ItemDto(
-                        cartTM.getItemId(),
-                        cartTM.getCustomerId(),
-                        cartTM.getName(),
-                        cartTM.getCartQty(),
-                        (int) cartTM.getUnitPrice(),
-                        String.valueOf(cartTM.getTotal())
-
-
-                ));
-                boolean inventoryUpdated = inventoryBO.reduceItemQty(
+                System.out.println("Processing item: " + cartTM.getCustomerId());
+//                boolean itemSaved = itemBO.save(new ItemDto(
+//                        cartTM.getItemId(),
+//                        cartTM.getName(),
+//                        cartTM.getCustomerId(),
+//                        cartTM.getCartQty(),
+//                        (int) cartTM.getUnitPrice(),
+//                        String.valueOf(cartTM.getTotal())
+//                ));
+                boolean inventoryUpdated = itemBO.reduceItemQtys(
                         cartTM.getItemId(),
                         cartTM.getCartQty()
                 );
-                if (!itemSaved || !inventoryUpdated) {
+                if ( !inventoryUpdated) {
                     allItemsSaved = false;
                     break;
                 }
+//                if (!itemSaved || !inventoryUpdated) {
+//                    allItemsSaved = false;
+//                    break;
+//                }
             }
             if (!allItemsSaved) {
                 connection.rollback();
@@ -285,10 +292,10 @@ public class OrderPlacementController implements Initializable {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
 
 //            orderId
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("P_ORDER_ID", orderId);
-
-            String outputFilePath = LocalDate.now().toString() + ".pdf";
+//            Map<String, Object> parameters = new HashMap<>();
+//            parameters.put("P_ORDER_ID", orderId);
+//
+//            String outputFilePath = LocalDate.now().toString() + ".pdf";
 
 
 
@@ -335,7 +342,7 @@ public class OrderPlacementController implements Initializable {
                 lblCustomerName.setText("");
                 return;
             }
-            String customerContact = customerBO.getCustomerIdByContact(contact);
+            String customerContact = customerBO.getCustomerNameById(customerBO.getCustomerIdByContact(contact));
             if (customerContact != null) {
                 lblCustomerName.setText(customerContact);
 

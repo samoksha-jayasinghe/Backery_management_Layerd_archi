@@ -5,9 +5,12 @@
 //import javafx.scene.control.*;
 //import javafx.scene.input.MouseEvent;
 //import javafx.scene.layout.AnchorPane;
-//import lk.ijse.bakerymanagment.dto.UsersDto;
-//import lk.ijse.bakerymanagment.model.UserModel;
-//import lk.ijse.bakerymanagment.util.CrudUtil;
+//import lk.ijse.backery_management_system.bo.BOFactory;
+//import lk.ijse.backery_management_system.bo.custom.UserBO;
+//import lk.ijse.backery_management_system.controller.util.EmailUtil;
+//import lk.ijse.backery_management_system.dao.custom.SQLUtil;
+//import lk.ijse.backery_management_system.dto.UsersDto;
+//
 //
 //import java.sql.ResultSet;
 //import java.util.UUID;
@@ -39,8 +42,8 @@
 //
 //    String userId = UUID.randomUUID().toString(); // Import java.util.UUID
 //
-//
-//    private final UserModel userModel = new UserModel();
+//    private final UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.USERS);
+//    //private final UserModel userModel = new UserModel();
 //
 //    public void initialize() {
 //        // No validation needed
@@ -66,16 +69,16 @@
 //        }
 //
 //        try {
-//            ResultSet resultSet = CrudUtil.execute("SELECT * FROM users WHERE name = ? OR email = ?", inputUsername, inputEmail);
+//            ResultSet resultSet = SQLUtil.executeQuery("SELECT * FROM users WHERE name = ? OR email = ?", inputUsername, inputEmail);
 //
 //            if (resultSet.next()) {
 //                new Alert(Alert.AlertType.ERROR, "User already exists").show();
 //                return;
 //            }
 //
-//            String userId = UserModel.getNextUserId();
+//            String userId = UserBO.getNextUserId();
 //
-//            boolean isSaved = UserModel.saveUser(new UsersDto(
+//            UserBO.save(new UsersDto(
 //                    userId,
 //                    inputUsername,
 //                    inputAddress,

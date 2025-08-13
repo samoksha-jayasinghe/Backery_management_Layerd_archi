@@ -17,5 +17,6 @@ public interface ItemBO extends SuperBO {
     public boolean delete(String invoiceId) throws SQLException, ClassNotFoundException;
     public ArrayList<ItemDto> search(String search) throws SQLException, ClassNotFoundException;
     public ItemDto getItemById(String itemId) throws SQLException, ClassNotFoundException;
+    public boolean reduceItemQtys(String itemId, int cartQty) ;
 
 }

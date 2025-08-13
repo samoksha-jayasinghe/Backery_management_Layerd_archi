@@ -1,150 +1,150 @@
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<?xml version="1.0" encoding="UTF-8"?>
 
-<!--<?import javafx.geometry.Insets?>-->
-<!--<?import javafx.scene.control.Button?>-->
-<!--<?import javafx.scene.control.Label?>-->
-<!--<?import javafx.scene.control.PasswordField?>-->
-<!--<?import javafx.scene.control.TextField?>-->
-<!--<?import javafx.scene.image.Image?>-->
-<!--<?import javafx.scene.image.ImageView?>-->
-<!--<?import javafx.scene.layout.AnchorPane?>-->
-<!--<?import javafx.scene.layout.HBox?>-->
-<!--<?import javafx.scene.layout.StackPane?>-->
-<!--<?import javafx.scene.layout.VBox?>-->
-<!--<?import javafx.scene.text.Font?>-->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<!--<AnchorPane fx:id="ancSignin" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.backery_management_system.controller.LoginPageController">-->
-<!--   <children>-->
-<!--      <StackPane layoutY="1.0" prefHeight="722.0" prefWidth="454.0">-->
-<!--         <children>-->
-<!--            <ImageView fitHeight="1055.0" fitWidth="705.0" pickOnBounds="true" preserveRatio="true">-->
-<!--               <image>-->
-<!--                  <Image url="@../images/05af9ebc11f2e371be25daf35252a6ed.jpg" />-->
-<!--               </image>-->
-<!--            </ImageView>-->
-<!--            <HBox prefHeight="100.0" prefWidth="200.0" />-->
-<!--         </children>-->
-<!--      </StackPane>-->
-<!--      <VBox layoutX="704.0" layoutY="89.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="704.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
-<!--         <children>-->
-<!--            <VBox prefHeight="957.0" prefWidth="656.0" style="-fx-background-color: #fff; -fx-background-radius: 20; -fx-border-color: #e7d2cb; -fx-border-width: 5; -fx-border-radius: 20;">-->
-<!--               <VBox.margin>-->
-<!--                  <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />-->
-<!--               </VBox.margin>-->
-<!--               <children>-->
-<!--                  <HBox prefHeight="100.0" prefWidth="200.0">-->
-<!--                     <children>-->
-<!--                        <Label prefHeight="84.0" prefWidth="159.0" text="Sign in">-->
-<!--                           <HBox.margin>-->
-<!--                              <Insets left="30.0" />-->
-<!--                           </HBox.margin>-->
-<!--                           <font>-->
-<!--                              <Font name="Gabriola" size="70.0" />-->
-<!--                           </font>-->
-<!--                        </Label>-->
-<!--                        <ImageView fitHeight="101.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                           <HBox.margin>-->
-<!--                              <Insets left="526.0" />-->
-<!--                           </HBox.margin>-->
-<!--                           <image>-->
-<!--                              <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/560042a6176b79e2248fab161bd1e909-removebg-preview.png" />-->
-<!--                           </image>-->
-<!--                        </ImageView>-->
-<!--                     </children>-->
-<!--                     <VBox.margin>-->
-<!--                        <Insets top="59.0" />-->
-<!--                     </VBox.margin>-->
-<!--                  </HBox>-->
-<!--                  <VBox prefHeight="226.0" prefWidth="486.0">-->
-<!--                     <VBox.margin>-->
-<!--                        <Insets top="95.0" />-->
-<!--                     </VBox.margin>-->
-<!--                     <children>-->
-<!--                        <HBox prefHeight="100.0" prefWidth="200.0">-->
-<!--                           <children>-->
-<!--                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">-->
-<!--                                 <children>-->
-<!--                                    <Label text="Username">-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets left="100.0" right="100.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </Label>-->
-<!--                                    <TextField fx:id="txtUsername" prefHeight="35.0" prefWidth="386.0" promptText="username" style="-fx-background-radius: 20;">-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets left="100.0" right="100.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </TextField>-->
-<!--                                 </children>-->
-<!--                              </VBox>-->
-<!--                           </children>-->
-<!--                        </HBox>-->
-<!--                        <HBox prefHeight="100.0" prefWidth="200.0">-->
-<!--                           <children>-->
-<!--                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">-->
-<!--                                 <children>-->
-<!--                                    <Label text="Password">-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets left="100.0" right="100.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </Label>-->
-<!--                                    <PasswordField fx:id="txtPassword" prefHeight="35.0" prefWidth="286.0" promptText="password" style="-fx-background-radius: 20;">-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets left="100.0" right="100.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </PasswordField>-->
-<!--                                    <Label onMouseClicked="#goToForgetPassword" prefHeight="17.0" prefWidth="135.0" text="Forget Password ? " textFill="#00c3ff">-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets left="793.0" right="100.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </Label>-->
-<!--                                 </children>-->
-<!--                              </VBox>-->
-<!--                           </children>-->
-<!--                        </HBox>-->
-<!--                     </children>-->
-<!--                  </VBox>-->
-<!--                  <VBox prefHeight="200.0" prefWidth="100.0">-->
-<!--                     <children>-->
-<!--                        <Button fx:id="btnSignIn" mnemonicParsing="false" onAction="#btnSignInOnAction" prefHeight="55.0" prefWidth="181.0" style="-fx-background-radius: 20; -fx-background-color: #e7d2cb; -fx-border-color: #000; -fx-border-radius: 20;" text="Sign in">-->
-<!--                           <VBox.margin>-->
-<!--                              <Insets left="401.0" right="100.0" top="21.0" />-->
-<!--                           </VBox.margin>-->
-<!--                           <font>-->
-<!--                              <Font size="20.0" />-->
-<!--                           </font>-->
-<!--                        </Button>-->
-<!--                        <HBox prefHeight="100.0" prefWidth="200.0">-->
-<!--                           <children>-->
-<!--                              <Label prefHeight="24.0" prefWidth="138.0" text="Dont have an account ?    ">-->
-<!--                                 <HBox.margin>-->
-<!--                                    <Insets left="372.0" top="10.0" />-->
-<!--                                 </HBox.margin>-->
-<!--                              </Label>-->
-<!--                              <Label onMouseClicked="#goToSignUpPage" prefHeight="24.0" prefWidth="138.0" text="Sign up" textFill="#18a2ff">-->
-<!--                                 <font>-->
-<!--                                    <Font name="System Bold" size="15.0" />-->
-<!--                                 </font>-->
-<!--                                 <HBox.margin>-->
-<!--                                    <Insets top="10.0" />-->
-<!--                                 </HBox.margin>-->
-<!--                              </Label>-->
-<!--                           </children>-->
-<!--                        </HBox>-->
-<!--                     </children>-->
-<!--                  </VBox>-->
-<!--                  <HBox prefHeight="165.0" prefWidth="911.0">-->
-<!--                     <children>-->
-<!--                        <ImageView fitHeight="167.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                           <image>-->
+<AnchorPane fx:id="ancSignin" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.backery_management_system.controller.LoginPageController">
+   <children>
+      <StackPane layoutY="1.0" prefHeight="722.0" prefWidth="454.0">
+         <children>
+            <ImageView fitHeight="1055.0" fitWidth="705.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/05af9ebc11f2e371be25daf35252a6ed.jpg" />
+               </image>
+            </ImageView>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </StackPane>
+      <VBox layoutX="704.0" layoutY="89.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="704.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="957.0" prefWidth="656.0" style="-fx-background-color: #fff; -fx-background-radius: 20; -fx-border-color: #e7d2cb; -fx-border-width: 5; -fx-border-radius: 20;">
+               <VBox.margin>
+                  <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+               </VBox.margin>
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="84.0" prefWidth="159.0" text="Sign in">
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Gabriola" size="70.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="101.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="526.0" />
+                           </HBox.margin>
+                         <image>
+<!--                             <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/560042a6176b79e2248fab161bd1e909-removebg-preview.png" />-->
+                         </image>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="59.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <VBox prefHeight="226.0" prefWidth="486.0">
+                     <VBox.margin>
+                        <Insets top="95.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Username">
+                                       <VBox.margin>
+                                          <Insets left="100.0" right="100.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtUsername" prefHeight="35.0" prefWidth="386.0" promptText="username" style="-fx-background-radius: 20;">
+                                       <VBox.margin>
+                                          <Insets left="100.0" right="100.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Password">
+                                       <VBox.margin>
+                                          <Insets left="100.0" right="100.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <PasswordField fx:id="txtPassword" prefHeight="35.0" prefWidth="286.0" promptText="password" style="-fx-background-radius: 20;">
+                                       <VBox.margin>
+                                          <Insets left="100.0" right="100.0" />
+                                       </VBox.margin>
+                                    </PasswordField>
+                                    <Label onMouseClicked="#goToForgetPassword" prefHeight="17.0" prefWidth="135.0" text="Forget Password ? " textFill="#00c3ff">
+                                       <VBox.margin>
+                                          <Insets left="793.0" right="100.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button fx:id="btnSignIn" mnemonicParsing="false" onAction="#btnSignInOnAction" prefHeight="55.0" prefWidth="181.0" style="-fx-background-radius: 20; -fx-background-color: #e7d2cb; -fx-border-color: #000; -fx-border-radius: 20;" text="Sign in">
+                           <VBox.margin>
+                              <Insets left="401.0" right="100.0" top="21.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="24.0" prefWidth="138.0" text="Dont have an account ?    ">
+                                 <HBox.margin>
+                                    <Insets left="372.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label onMouseClicked="#goToSignUpPage" prefHeight="24.0" prefWidth="138.0" text="Sign up" textFill="#18a2ff">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="165.0" prefWidth="911.0">
+                     <children>
+                        <ImageView fitHeight="167.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
 <!--                              <Image url="@../../../../../../../../../Users/Samoksha%20Jayasinghe/Downloads/6640c8f9cf80e08ba164da3c20d3168d-removebg-preview.png" />-->
-<!--                           </image>-->
-<!--                        </ImageView>-->
-<!--                     </children>-->
-<!--                  </HBox>-->
-<!--               </children>-->
-<!--            </VBox>-->
-<!--         </children>-->
-<!--      </VBox>-->
-<!--      <HBox prefHeight="100.0" prefWidth="200.0" />-->
-<!--   </children>-->
-<!--</AnchorPane>-->
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

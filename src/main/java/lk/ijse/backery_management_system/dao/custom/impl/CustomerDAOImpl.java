@@ -96,9 +96,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     public String getCustomerIdByContact(String contact) throws SQLException {
         try {
-            ResultSet resultSet = SQLUtil.executeQuery("select first_name from customer where contact = ?", contact);
+            ResultSet resultSet = SQLUtil.executeQuery("select customer_id from customer where contact = ?", contact);
             if (resultSet.next()) {
-                return resultSet.getString("first_name");
+                return resultSet.getString("customer_id");
             }
         } catch (Exception e) {
             e.printStackTrace();

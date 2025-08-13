@@ -29,7 +29,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public boolean save(ItemEntity itemDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.executeUpdate(
-                "insert into inventory values (?,?,?,?,?,?)",
+                "insert into item values (?,?,?,?,?,?)",
                 itemDto.getItemId(),
                 itemDto.getName(),
                 itemDto.getCategory(),

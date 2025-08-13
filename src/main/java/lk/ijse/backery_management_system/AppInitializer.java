@@ -12,7 +12,7 @@ import java.util.Objects;
 public class AppInitializer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent parent = FXMLLoader.load(getClass().getResource("/view/DashBordPage.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/StartPage.fxml"));
 
 
         Scene scene = new Scene(parent);
