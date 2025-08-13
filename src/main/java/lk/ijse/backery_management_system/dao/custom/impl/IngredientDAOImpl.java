@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class IngredientDAOImpl implements IngredientDAO {
     public String getNextId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.executeQuery("select ingredient_id from ingredient order by ingredient_id desc  limit 1");
+        ResultSet resultSet = SQLUtil.executeQuery("select item_id from ingredient order by item_id desc  limit 1");
         char tableCharacter = 'I';
         if (resultSet.next()) {
             String lastId = resultSet.getString(1);
@@ -55,7 +55,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     public boolean update(IngredientEntity ingredientDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.executeUpdate(
-                "update ingredient set product_id=? , batch_no=? , expiry_date =? , quantity=? , ingredient_name=? ,  where ingredient_id= ?",
+                "update ingredient set product_id=? , batch_no=? , expiry_date =? , quantity=? , ingredient_name=? ,  where item_id= ?",
                 ingredientDto.getProductId(),
                 ingredientDto.getBatchno(),
                 ingredientDto.getDate(),
@@ -68,19 +68,19 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     public boolean delete(String ingredientId) throws SQLException, ClassNotFoundException {
         return SQLUtil.executeUpdate(
-                "delete from ingredient where ingredient_id = ?",
+                "delete from ingredient where item_id = ?",
                 ingredientId
         );
     }
 
     public ArrayList<IngredientEntity> search(String search) throws SQLException, ClassNotFoundException {
         ArrayList<IngredientEntity> dtos = new ArrayList<>();
-        String sql = "SELECT * FROM ingredient WHERE ingredient_id LIKE ? OR product_id LIKE ? OR batch_no LIKE ? OR expiry_date LIKE ? OR quantity LIKE ? OR user_id ingredient_name ?";
+        String sql = "SELECT * FROM ingredient WHERE item_id LIKE ? OR product_id LIKE ? OR batch_no LIKE ? OR expiry_date LIKE ? OR quantity LIKE ? OR user_id ingredient_name ?";
         String pattern = "%" + search + "%";
 
         ResultSet resultSet = SQLUtil.executeQuery(sql, pattern, pattern, pattern, pattern);
         while (resultSet.next()) {
-            dtos.add(new IngredientEntity(resultSet.getString("ingredient_id"), resultSet.getString("product_id"), resultSet.getString("batch_no"), resultSet.getString("expiry_date"),resultSet.getInt("quantity"), resultSet.getString("ingredient_name")));
+            dtos.add(new IngredientEntity(resultSet.getString("item_id"), resultSet.getString("product_id"), resultSet.getString("batch_no"), resultSet.getString("expiry_date"),resultSet.getInt("quantity"), resultSet.getString("ingredient_name")));
         }
         return dtos;
     }

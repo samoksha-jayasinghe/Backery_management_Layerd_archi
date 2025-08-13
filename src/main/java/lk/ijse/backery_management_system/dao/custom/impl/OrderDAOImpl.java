@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class OrderDAOImpl implements OrderDAO {
     public String getNextId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.executeQuery("select order_id from order order by order_id desc  limit 1");
+        ResultSet resultSet = SQLUtil.executeQuery("select order_id from orders order by order_id desc  limit 1");
         char tableCharacter = 'O';
         if (resultSet.next()) {
             String lastId = resultSet.getString(1);

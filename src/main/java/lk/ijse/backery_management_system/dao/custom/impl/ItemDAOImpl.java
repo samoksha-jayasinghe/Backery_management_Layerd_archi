@@ -1,6 +1,7 @@
 package lk.ijse.backery_management_system.dao.custom.impl;
 
 import lk.ijse.backery_management_system.dao.custom.ItemDAO;
+import lk.ijse.backery_management_system.dto.ItemDto;
 import lk.ijse.backery_management_system.entity.*;
 import lk.ijse.backery_management_system.dao.custom.SQLUtil;
 
@@ -79,6 +80,22 @@ public class ItemDAOImpl implements ItemDAO {
             dtos.add(new ItemEntity(resultSet.getString("item_id"), resultSet.getString("name"), resultSet.getString("category"), resultSet.getInt("price"),resultSet.getInt("quantity_in_stock"), resultSet.getString("expiry_date")));
         }
         return dtos;
+    }
+
+    public ItemEntity getItemById(String itemId) throws SQLException, ClassNotFoundException {
+
+        ResultSet resultSet = SQLUtil.executeQuery("select * from item where item_id = ?", itemId);
+        if (resultSet.next()) {
+            return new ItemEntity(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getInt(4),
+                    resultSet.getInt(5),
+                    resultSet.getString(6)
+            );
+        }
+        return null;
     }
 
 

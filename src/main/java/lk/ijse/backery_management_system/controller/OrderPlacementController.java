@@ -13,6 +13,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lk.ijse.backery_management_system.bo.BOFactory;
+import lk.ijse.backery_management_system.bo.custom.*;
+import lk.ijse.backery_management_system.db.DBConnection;
+import lk.ijse.backery_management_system.dto.InventoryDto;
+import lk.ijse.backery_management_system.dto.ItemDto;
 import lk.ijse.backery_management_system.viewTm.OrderCartTM;
 
 
@@ -47,14 +52,12 @@ public class OrderPlacementController implements Initializable {
     public TableColumn<OrderCartTM , String> colTotal;
     public TableColumn<? , ?> colAction;
 
-
-
-
-    private  final OrderModel orderModel = new OrderModel();
-    private final CustomerModel customerModel = new CustomerModel();
-    private final ItemModel itemModel = new ItemModel();
-    private final InventoryModel inventoryModel = new InventoryModel();
-    private final OrderdetailsModel orderItemModel = new OrderdetailsModel();
+    private final PLaceOrderBO pLaceOrderBO = (PLaceOrderBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.PLACE_ORDERS);
+    private final CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CUSTOMER);
+    private final OrderBO orderBO = (OrderBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ORDER);
+    private final ItemBO itemBO = (ItemBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ITEM);
+    private final InventoryBO inventoryBO = (InventoryBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.INVENTORY);
+    private final OrderdetailsBO orderdetailsBO = (OrderdetailsBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.ORDERDETAILS);
 
     private final ObservableList<OrderCartTM> cartData = FXCollections.observableArrayList();
 
@@ -94,7 +97,7 @@ public class OrderPlacementController implements Initializable {
         tblOrderPlacement.setItems(cartData);
     }
 
-    public void btnAddToCartOnAction(ActionEvent actionEvent) {
+    public void btnAddToCartOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedItemId = (String) cmbItemId.getSelectionModel().getSelectedItem();
         String cartQtyString = txtQoh.getText();
 
@@ -117,7 +120,7 @@ public class OrderPlacementController implements Initializable {
             return;
         }
 
-        String selectedCustomerId = CustomerModel.getCustomerIdByContact(txtCustomerContact.getText());
+        String selectedCustomerId = customerBO.getCustomerNameById(txtCustomerContact.getText());
         String itemName = lblItemName.getText();
         String itemUnitPriceString = lblItemPrice.getText();
 
@@ -175,7 +178,7 @@ public class OrderPlacementController implements Initializable {
     public void btnPlaceOrderOnAction(ActionEvent actionEvent) {
         Connection connection = null;
         try {
-            connection = DBConnection.getInstance().getConnection();
+            connection = DBConnection.getDbConnection().getConnection();
             connection.setAutoCommit(false);
 
             // 1. Prepare IDs and data
@@ -186,7 +189,7 @@ public class OrderPlacementController implements Initializable {
             String orderId = lblOrderId.getText();
             String orderDate = orderPlacementDate.getText();
             String customerContact = txtCustomerContact.getText();
-            String customerId = customerModel.getCustomerIdByContact(customerContact);
+            String customerId = customerBO.getCustomerNameById(customerContact);
             String status = "Shipped";
             String totalAmount = String.valueOf(cartData.stream().mapToDouble(OrderCartTM::getTotal).sum());
 
@@ -209,12 +212,12 @@ public class OrderPlacementController implements Initializable {
 
 
             // Save order
-            boolean orderSaved = orderModel.saveNewOrder(
+            boolean orderSaved = orderBO.saveNewOrder(
                     orderId,
                     orderDate,
                     customerId,
                     status,
-                    total
+                    String.valueOf(total)
             );
             if (!orderSaved) {
                 connection.rollback();
@@ -225,14 +228,18 @@ public class OrderPlacementController implements Initializable {
             // Save order items and update inventory
             boolean allItemsSaved = true;
             for (OrderCartTM cartTM : cartData) {
-                String orderItemId = orderItemModel.getNextOrderdetailsId();
-                boolean itemSaved = orderItemModel.saveNewOrderItem(
-                        orderId,
+                //String orderItemId = itemBO.getNextId();
+                boolean itemSaved = itemBO.save(new ItemDto(
                         cartTM.getItemId(),
-                        cartTM.getCartQty()
-                        // amount = unit price * qty
-                );
-                boolean inventoryUpdated = inventoryModel.reduceItemQty(
+                        cartTM.getCustomerId(),
+                        cartTM.getName(),
+                        cartTM.getCartQty(),
+                        (int) cartTM.getUnitPrice(),
+                        String.valueOf(cartTM.getTotal())
+
+
+                ));
+                boolean inventoryUpdated = inventoryBO.reduceItemQty(
                         cartTM.getItemId(),
                         cartTM.getCartQty()
                 );
@@ -328,9 +335,9 @@ public class OrderPlacementController implements Initializable {
                 lblCustomerName.setText("");
                 return;
             }
-            String customerId = customerModel.getCustomerIdByContact(contact);
-            if (customerId != null) {
-                lblCustomerName.setText(customerModel.getCustomerNameById(customerId));
+            String customerContact = customerBO.getCustomerIdByContact(contact);
+            if (customerContact != null) {
+                lblCustomerName.setText(customerContact);
 
             } else {
                 lblCustomerName.setText("No customer found with this contact");
@@ -372,33 +379,27 @@ public class OrderPlacementController implements Initializable {
 
         cmbItemId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                loadItemDetails((String) newValue);
+                try {
+                    ItemDto items = itemBO.getItemById(newValue);
+                    lblItemName.setText(items.getName());
+                    lblAvailableQty.setText(String.valueOf(items.getQuantity()));
+                    lblItemPrice.setText(String.valueOf(items.getPrice()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
 
     }
 
-    private void loadItemDetails(String itemId) {
-        try {
-            InventoryDto item = inventoryModel.getItemsByIds(itemId);
-            if (item != null) {
-                lblItemName.setText(item.getItemName());
-                txtAddToCartQty.setText(String.valueOf(item.getQuantity()));
-                lblItemPrice.setText(String.valueOf(item.getPrice()));
-            } else {
-                lblItemName.setText("");
-                txtQoh.setText("");
-                lblItemPrice.setText("");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Fail to load item details..!").show();
-        }
+    private void loadItemDetails() throws SQLException, ClassNotFoundException {
+        ArrayList<String> itemDetails = inventoryBO.getAllInventoryIds();
+        cmbItemId.setItems(FXCollections.observableArrayList(itemDetails));
     }
 
     private void refreshPage() throws SQLException, ClassNotFoundException {
-        lblOrderId.setText(orderModel.getNextOrderId());
+        lblOrderId.setText(orderBO.getNextId());
         orderPlacementDate.setText(LocalDate.now().toString());
 
         loadCustomerIds();
@@ -407,7 +408,7 @@ public class OrderPlacementController implements Initializable {
 
     private void loadItemIds() {
         try {
-            ArrayList<String> itemIdsList = itemIdsList = inventoryModel.getAllItemIds();
+            ArrayList<String> itemIdsList = itemIdsList = inventoryBO.getAllInventoryIds();
             ObservableList<String> itemIds = FXCollections.observableArrayList();
             itemIds.addAll(itemIdsList);
             cmbItemId.setItems(itemIds);
@@ -420,7 +421,7 @@ public class OrderPlacementController implements Initializable {
 
     private void loadCustomerIds() {
         try {
-            ArrayList<String> customerIdsList = customerModel.getAllCustomerIds();
+            ArrayList<String> customerIdsList = customerBO.getAllCustomerIds();
             ObservableList<String> customerIds = FXCollections.observableArrayList();
             customerIds.addAll(customerIdsList);
             cmbItemId.setItems(customerIds);
@@ -451,7 +452,7 @@ public class OrderPlacementController implements Initializable {
 
     private void loadNextId() {
         try {
-            String nextId = orderModel.getNextOrderId();
+            String nextId = orderBO.getNextId();
             lblOrderId.setText(nextId);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

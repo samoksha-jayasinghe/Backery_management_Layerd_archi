@@ -21,7 +21,14 @@ public class ItemBOImpl implements ItemBO {
 
 
     public boolean save(ItemDto itemDto) throws SQLException, ClassNotFoundException {
-        return itemDAO.save(new ItemEntity(itemDto.getItemId(),itemDto.getName(),itemDto.getCategory(),itemDto.getPrice(),itemDto.getQuantity(),itemDto.getExpirDate()));
+        return itemDAO.save(new ItemEntity(
+                itemDto.getItemId(),
+                itemDto.getName(),
+                itemDto.getCategory(),
+                itemDto.getPrice(),
+                itemDto.getQuantity(),
+                itemDto.getExpirDate()
+        ));
     }
 
     public boolean update(ItemDto itemDto) throws SQLException, ClassNotFoundException {
@@ -39,6 +46,22 @@ public class ItemBOImpl implements ItemBO {
             dtos.add(new ItemDto(item.getItemId(),item.getName(),item.getCategory(),item.getPrice(),item.getQuantity(),item.getExpirDate()));
         }
         return dtos;
+    }
+
+    @Override
+    public ItemDto getItemById(String itemId) throws SQLException, ClassNotFoundException {
+        ItemEntity item = itemDAO.getItemById(itemId);
+        if (item != null) {
+            return new ItemDto(
+                    item.getItemId(),
+                    item.getName(),
+                    item.getCategory(),
+                    item.getPrice(),
+                    item.getQuantity(),
+                    item.getExpirDate()
+            );
+        }
+        return null;
     }
 
     public ArrayList<ItemDto> getAll() throws SQLException, ClassNotFoundException {

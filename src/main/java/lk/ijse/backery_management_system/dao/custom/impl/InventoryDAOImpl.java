@@ -81,6 +81,39 @@ public class InventoryDAOImpl implements InventoryDAO {
         return dtos;
     }
 
+    public ArrayList<String> getAllInventoryIds() throws SQLException, ClassNotFoundException {
+//        ResultSet resultSet = SQLUtil.executeQuery("select inventory_id from inventory");
+//        ArrayList<String> list = new ArrayList<>();
+//        while (resultSet.next()) {
+//            String id = resultSet.getString(1);
+//            list.add(id);
+//        }
+//        return list;
+
+        ArrayList<String> itemIds = new ArrayList<>();
+        ResultSet resultSet = SQLUtil.executeQuery("select inventory_id from inventory");
+        while (resultSet.next()) {
+            itemIds.add(resultSet.getString("inventory_id"));
+        }
+        return itemIds;
+    }
+
+
+
+
+
+    public String getInventoryNameById(String customerId) throws SQLException {
+        try {
+            ResultSet resultSet = SQLUtil.executeQuery("select item_name from inventory where inventory_id = ?", customerId);
+            if (resultSet.next()) {
+                return resultSet.getString("item_name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return "Customer Not found";
+    }
 
 
 }

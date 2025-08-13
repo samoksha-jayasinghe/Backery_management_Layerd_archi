@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class FeedbackDAOImpl implements FeedbackDAO {
     public String getNextId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.executeQuery("select feedback_id from employee order by feedback_id desc limit 1");
+        ResultSet resultSet = SQLUtil.executeQuery("select feedback_id from feedback order by feedback_id desc limit 1");
         char tableCharacter = 'F';
         if (resultSet.next()) {
             String lastId = resultSet.getString(1);
@@ -33,7 +33,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
     public boolean save(FeedbackEntity feedbackDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.executeUpdate(
-                "insert into employee values(?,?,?,?,?)",
+                "insert into feedback values(?,?,?,?,?)",
                 feedbackDto.getFeedbackId(),
                 feedbackDto.getCustomerId(),
                 feedbackDto.getOrderId(),
@@ -55,7 +55,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
     public boolean delete(String feedback_id) throws SQLException, ClassNotFoundException {
         return SQLUtil.executeUpdate(
-                "delete from employee where feedback_id = ?",
+                "delete from feedback where feedback_id = ?",
                 feedback_id
         );
     }
